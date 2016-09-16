@@ -1,9 +1,13 @@
-var j0, j1, j2, j3;
+//socket and server code taken from Daniel Shiffman's youtube series Shared Drawing Canvas https://www.youtube.com/watch?v=i6eP1Lw4gZk
+//IK Chain code taken from Ira's class example 
+
 var lineLength, centerX, centerY;
 var joints = [];
 var jointCount;
 var mx, my;
-var isDraggable;
+
+
+var socket;
 
 function setup() {
     createCanvas(windowWidth, windowHeight); //make panel to draw on in the site
@@ -14,6 +18,14 @@ function setup() {
     for (var i = 0; i < jointCount; i++) {
         joints[i] = createVector(lineLength*i, 0);
     }
+    
+    //change to whatever ip the local host is using
+    socket = io.connect('http://localhost:5000');
+    socket.on('mouse', function(data){
+        console.log("Got: " + data.x + " " + data.y);
+        joints[joints.length-1].x = data.x;
+        joints[joints.length-1].y = data.y;
+    })
 }
 
 function draw() {
@@ -33,11 +45,6 @@ function IkPoints() {
         joints[i].y = joints[i+1].y - sin(theta) * lineLength;
     }
 
-    if(isDraggable) {
-        joints[joints.length-1].x = mx;
-        joints[joints.length-1].y = my;
-    }
-
 }
 
 function drawPoints(){
@@ -52,12 +59,16 @@ function drawPoints(){
     }
 }
 
-function mousePressed() {
-    if (dist(mx, my, joints[joints.length-1].x, joints[joints.length-1].y) < 5){
-        isDraggable = true;
-    }
+function mouseDragged() {
+    joints[joints.length-1].x = mx;
+    joints[joints.length-1].y = my;
+    sendmouse(mx, my);
 }
 
-function mouseReleased() {
-    isDraggable = false;
+function sendmouse(xpos, ypos){
+    var data = {
+        x: xpos,
+        y: ypos
+    };
+    socket.emit('mouse', data);
 }
