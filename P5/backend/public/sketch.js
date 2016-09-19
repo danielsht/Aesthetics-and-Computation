@@ -11,6 +11,7 @@ var socket;
 
 function setup() {
     createCanvas(windowWidth, windowHeight); //make panel to draw on in the site
+    background(204, 255, 204);
     centerX = width/2;
     centerY = height/2;
     lineLength = 100;
@@ -20,7 +21,7 @@ function setup() {
     }
     
     //change to whatever ip the local host is using
-    socket = io.connect('http://localhost:5000');
+    socket = io.connect('http://10.8.155.36:5000');
     socket.on('mouse', function(data){
         console.log("Got: " + data.x + " " + data.y);
         joints[joints.length-1].x = data.x;
@@ -29,7 +30,9 @@ function setup() {
 }
 
 function draw() {
-    background(100);
+    if (frameCount % 1800 === 0) {
+        background(204, 255, 204);
+    }
     noFill();
     mx = mouseX - centerX;
     my = mouseY - centerY;
@@ -48,15 +51,17 @@ function IkPoints() {
 }
 
 function drawPoints(){
+    strokeWeight(4);
+    stroke(250, 128, 114);
     beginShape();
     for (var i = 0; i < joints.length; i++) {
         vertex(joints[i].x, joints[i].y);
     }
     endShape();
-    fill(255);
-    for (var i = 0; i < joints.length; i++) {
-        ellipse(joints[i].x, joints[i].y, 5, 5);
-    }
+    // fill(255);
+    // for (var i = 0; i < joints.length; i++) {
+    //     ellipse(joints[i].x, joints[i].y, 5, 5);
+    // }
 }
 
 function mouseDragged() {
