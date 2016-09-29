@@ -1,6 +1,6 @@
 //Sphere modified from Daniel Shiffman's Coding Rainbow Coding Challenges
 //to be used with Perlin Noise.
-
+//Dave Smith helped me with the mountains and valleys.
 import peasy.*;
 
 PeasyCam cam;
@@ -19,7 +19,7 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(#FAE085);
   noStroke();
   rotateX(PI/2);
   lights();
@@ -45,8 +45,10 @@ void draw() {
     }
   }
 
-  fill(255,165,0);
+  //fill(255,165,0);
   for (int i = 0; i < total; i++) {
+    //float hu = map(i, 0, total, 0, 255*6);
+    fill(135, 206, 250);
     beginShape(TRIANGLE_STRIP);
     for (int j = 0; j < total+1; j++) {
       PVector v1 = globe[i][j];

@@ -21,7 +21,7 @@ void setup() {
 
 void draw() {
   background(0);
-  //noStroke();
+  noStroke();
   lights();
   float r = 200;
   for (int i = 0; i < total+1; i++) {
@@ -41,6 +41,7 @@ void draw() {
   for (int i = 0; i < total; i++) {
     //float hu = map(i, 0, total, 0, 255*6);
     //fill(hu  % 255, 255, 255);
+    fill(255, 205, 148);
     beginShape(TRIANGLE_STRIP);
     for (int j = 0; j < total+1; j++) {
       PVector v1 = globe[i][j];
@@ -49,5 +50,13 @@ void draw() {
       vertex(v2.x, v2.y, v2.z);
     }
     endShape();
+  }
+}
+
+void keyPressed(){
+  if(key == 'r' || key == 'R'){
+    xOff = 0.0;
+    yOff = 0.0;
+    zOff = 0.0;
   }
 }
